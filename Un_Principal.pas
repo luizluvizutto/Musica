@@ -42,29 +42,32 @@ begin
 end;
 
 procedure TForm1.MontaScala( Nota: TNota; linha: Integer );
+var ObjNotas: TNotas;
+    Notas: array[0..7] of TNota;
+    i: Integer;
 begin
-   StringGrid1.Cells[0, linha] := NotaToStr(nota);
 
-   nota := Subir(nota, [tom]);
-   StringGrid1.Cells[1, linha] := NotaToStr(nota);
+   ObjNotas := TNotas.Create;
+   try
+      Notas[0] := Nota;
+      Notas[1] := ObjNotas.Subir( Notas[0], [tom] );
+      Notas[2] := ObjNotas.Subir( Notas[1], [tom] );
+      Notas[3] := ObjNotas.Subir( Notas[2], [meioTom] );
+      Notas[4] := ObjNotas.Subir( Notas[3], [tom] );
+      Notas[5] := ObjNotas.Subir( Notas[4], [tom] );
+      Notas[6] := ObjNotas.Subir( Notas[5], [tom] );
+      Notas[7] := ObjNotas.Subir( Notas[6], [meioTom] );
 
-   nota := Subir(nota, [tom]);
-   StringGrid1.Cells[2, linha] := NotaToStr(nota);
+      ObjNotas.NotaSimilar( Notas );
 
-   nota := Subir(nota, [meiotom]);
-   StringGrid1.Cells[3, linha] := NotaToStr(nota);
+      for i := 0 to 7 do begin
+         StringGrid1.Cells[i, linha] := ObjNotas.NotaToStr(Notas[i]);
+      end;
 
-   nota := Subir(nota, [tom]);
-   StringGrid1.Cells[4, linha] := NotaToStr(nota);
+   finally
+      ObjNotas.Free;
+   end;
 
-   nota := Subir(nota, [tom]);
-   StringGrid1.Cells[5, linha] := NotaToStr(nota);
-
-   nota := Subir(nota, [tom]);
-   StringGrid1.Cells[6, linha] := NotaToStr(nota);
-
-   nota := Subir(nota, [meiotom]);
-   StringGrid1.Cells[7, linha] := NotaToStr(nota);
 end;
 
 end.
