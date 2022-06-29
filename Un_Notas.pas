@@ -31,8 +31,11 @@ type
 
            );
 
+   TEscala = (maior,menor);
+
    TNotas = class
    private
+      FRepresentarComCifra: Boolean;
       // function Peso( Nota: TNota ): Integer;
       function GetValorTom(tom: TTom): Integer;
       function NotaCheia( Nota: TNota ): TNota;
@@ -41,7 +44,17 @@ type
       function Subir( Nota: TNota; Tons: Array of TTom ): TNota;
       function Descer( Nota: TNota; Tons: Array of TTom ): TNota;
       procedure NotaSimilar( var Notas: array of TNota );
+   end;
+
+   TNotasRepresentacao = class
+   private
+      FCifra: Boolean;
+      FMenor: Boolean;
+   public
+      property Cifra: Boolean read FCifra write FCifra;
+      property Menor: Boolean read FMenor write FMenor;
       function NotaToStr( Nota: TNota ): String;
+      Constructor Create;
    end;
 
    {
@@ -64,7 +77,7 @@ implementation
 
 function TNotas.Descer(Nota: TNota; Tons: array of TTom): TNota;
 begin
-   
+
 end;
 
 function TNotas.GetValorTom(tom: TTom): Integer;
@@ -86,7 +99,7 @@ begin
      FáSustenido: Result  := Fá;
      SolSustenido: Result := Sol;
    else
-        Result := Nota;
+     Result := Nota;
    end;
 end;
 
@@ -104,47 +117,10 @@ begin
       for j := i+1 to 5 do
          if i <> j then begin
             if A[i] = A[j] then begin
-               Notas[j] := Similar( Notas[j] );  
+               Notas[j] := Similar( Notas[j] );
             end;
          end;
 end;
-
-function TNotas.NotaToStr(Nota: TNota): String;
-begin
-   Result := GetEnumName(TypeInfo(TNota), integer(Nota));
-   Result := StringReplace( Result, 'Sustenido', '#', [] );
-   Result := StringReplace( Result, 'Bemol', '♭', [] );
-end;
-
-{
-function TNotas.Peso(Nota: TNota): Integer;
-begin
-   case nota of
-     Lá:             Result :=  1;
-     LáSustenido:    Result :=  2;
-     Si:             Result :=  3;
-     Dó:             Result :=  4;
-     DóSustenido:    Result :=  5;
-     Ré:             Result :=  6;
-     RéSustenido:    Result :=  7;
-     Mi:             Result :=  8;
-     Fá:             Result :=  9;
-     FáSustenido:    Result := 10;
-     Sol:            Result := 11;
-     SolSustenido:   Result := 12;
-
-     SiBemol:        Result :=  2;
-     RéBemol:        Result :=  5;
-     MiBemol:        Result :=  7;
-     SolBemol:       Result := 10;
-     LáBemol:        Result := 12;
-
-     FáBemol:        Result :=  8;
-     DóBemol:        Result :=  3;
-   end;
-end;
-}
-
 
 function TNotas.Similar(Nota: TNota): TNota;
 begin
@@ -175,6 +151,41 @@ begin
          Result := TNota( nRes );
       end;
    end;
+end;
+
+{ TNotasRepresentacao }
+
+constructor TNotasRepresentacao.Create;
+begin
+   FMenor := false;
+   FCifra := false;
+end;
+
+function TNotasRepresentacao.NotaToStr(Nota: TNota): String;
+var cMenor: String;
+begin
+   Result := GetEnumName(TypeInfo(TNota), integer(Nota));
+
+   cMenor := '';
+   if FCifra then begin
+
+      if FMenor then cMenor := 'm';
+
+      Result := StringReplace( Result, 'Lá',  'A', [] );
+      Result := StringReplace( Result, 'Si',  'B', [] );
+      Result := StringReplace( Result, 'Dó',  'C', [] );
+      Result := StringReplace( Result, 'Ré',  'D', [] );
+      Result := StringReplace( Result, 'Mi',  'E', [] );
+      Result := StringReplace( Result, 'Fá',  'F', [] );
+      Result := StringReplace( Result, 'Sol', 'G', [] );
+   end;
+
+   Result := StringReplace( Result, 'Sustenido', '#', [] );
+   Result := StringReplace( Result, 'Bemol', '♭', [] );
+
+   if FCifra then
+      Result := Result + cMenor;
+
 end;
 
 end.

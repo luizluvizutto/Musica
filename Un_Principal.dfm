@@ -10,18 +10,10 @@ object Form1: TForm1
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  Menu = MainMenu1
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Button1: TButton
-    Left = 8
-    Top = 8
-    Width = 75
-    Height = 25
-    Caption = 'Scala Maior'
-    TabOrder = 0
-    OnClick = Button1Click
-  end
   object StringGrid1: TStringGrid
     Left = 8
     Top = 72
@@ -30,6 +22,27 @@ object Form1: TForm1
     ColCount = 8
     RowCount = 7
     FixedRows = 0
-    TabOrder = 1
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Tahoma'
+    Font.Style = [fsBold]
+    ParentFont = False
+    TabOrder = 0
+  end
+  object MainMenu1: TMainMenu
+    Left = 224
+    Top = 16
+    object Escalas1: TMenuItem
+      Caption = 'Escalas'
+      object Maior1: TMenuItem
+        Caption = 'Maior'
+        OnClick = Maior1Click
+      end
+      object Menor1: TMenuItem
+        Caption = 'Menor'
+        OnClick = Menor1Click
+      end
+    end
   end
 end
